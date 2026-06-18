@@ -153,24 +153,32 @@
     opacity: 0.6;
   }
 
-  .hero-accent {
+  .hero-photo {
     position: absolute;
     right: clamp(2rem, 10vw, 10rem);
     top: 50%;
     transform: translateY(-50%);
-    width: clamp(120px, 20vw, 260px);
-    height: clamp(160px, 28vw, 360px);
-    border: 1px solid var(--divider);
+    width: clamp(140px, 22vw, 280px);
+    height: clamp(180px, 30vw, 380px);
     border-radius: 2px;
     opacity: 0;
     animation: fadeIn 1s 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   }
-  .hero-accent::after {
+  .hero-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.95) contrast(1.05);
+    border-radius: 2px;
+  }
+  .hero-photo::after {
     content: '';
     position: absolute;
-    inset: 8px;
-    border: 1px solid oklch(40% 0.02 75);
-    border-radius: 1px;
+    inset: -10px;
+    border: 1px solid var(--divider);
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: -1;
   }
 
   @keyframes fadeUp {
@@ -424,7 +432,7 @@
 
   /* === RESPONSIVE === */
   @media (max-width: 768px) {
-    .hero-accent { display: none; }
+    .hero-photo { display: none; }
     .about-grid { grid-template-columns: 1fr; gap: 2rem; }
     .exp-item { grid-template-columns: 1fr; gap: 0.8rem; }
     .exp-item:hover { padding-left: 0; margin-left: 0; margin-right: 0; padding-right: 0; }
@@ -470,7 +478,7 @@
       <span>21岁</span>
     </div>
   </div>
-  <div class="hero-accent"></div>
+  <div class="hero-photo"><img src="形象照.png" alt="李津"></div>
 </section>
 
 <section id="about">
