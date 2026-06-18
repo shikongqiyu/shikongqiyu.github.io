@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>李津 — 后期实习生</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-base: oklch(12% 0.008 75);
+    --bg-surface: oklch(15% 0.01 75);
+    --bg-elevated: oklch(18% 0.012 72);
+    --text-primary: oklch(92% 0.008 80);
+    --text-secondary: oklch(72% 0.015 75);
+    --text-muted: oklch(52% 0.012 72);
+    --accent: oklch(68% 0.12 78);
+    --accent-dim: oklch(58% 0.09 78);
+    --accent-glow: oklch(75% 0.14 80 / 0.15);
+    --divider: oklch(32% 0.01 75);
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --transition-base: 0.35s cubic-bezier(0.22, 0.61, 0.36, 1);
+    --transition-slow: 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+    --font-serif: 'Playfair Display', Georgia, 'Noto Serif SC', serif;
+    --font-sans: 'DM Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; font-size: clamp(15px, 1.2vw, 18px); }
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-base);
+    color: var(--text-primary);
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.035'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 256px 256px;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* === NAV === */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.2rem clamp(1.5rem, 6vw, 6rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    mix-blend-mode: difference;
+  }
+  .nav-logo {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    font-style: italic;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: oklch(85% 0.01 80 / 0.7);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color var(--transition-base);
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* === HERO === */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: clamp(2rem, 8vw, 8rem) clamp(1.5rem, 6vw, 6rem);
+    position: relative;
+  }
+  .hero-content { max-width: 900px; width: 100%; }
+  .hero-tag {
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  }
+  .hero h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(3.5rem, 9vw, 7rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    opacity: 0;
+    animation: fadeUp 0.8s 0.35s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+    display: block;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 480px;
+    margin-top: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  }
+  .hero-meta span {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .hero-meta span::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.6;
+  }
+
+  .hero-accent {
+    position: absolute;
+    right: clamp(2rem, 10vw, 10rem);
+    top: 50%;
+    transform: translateY(-50%);
+    width: clamp(120px, 20vw, 260px);
+    height: clamp(160px, 28vw, 360px);
+    border: 1px solid var(--divider);
+    border-radius: 2px;
+    opacity: 0;
+    animation: fadeIn 1s 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  }
+  .hero-accent::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid oklch(40% 0.02 75);
+    border-radius: 1px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* === SECTIONS === */
+  section {
+    padding: clamp(4rem, 10vw, 10rem) clamp(1.5rem, 6vw, 6rem);
+  }
+  .section-label {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 3rem;
+    opacity: 0.7;
+  }
+  .section-container { max-width: 1100px; margin: 0 auto; }
+
+  /* === ABOUT === */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: clamp(3rem, 8vw, 8rem);
+    align-items: start;
+  }
+  .about-side h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .about-side h2 em { font-style: italic; color: var(--accent); }
+  .about-main p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.85;
+    margin-bottom: 1.2rem;
+  }
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+  .stat {
+    border-top: 1px solid var(--divider);
+    padding-top: 1rem;
+  }
+  .stat-value {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--accent);
+    font-style: italic;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  /* === EXPERIENCE === */
+  .exp-item {
+    border-top: 1px solid var(--divider);
+    padding: 2.5rem 0;
+    display: grid;
+    grid-template-columns: 0.6fr 1fr 1.4fr;
+    gap: 2rem;
+    transition: background var(--transition-slow);
+  }
+  .exp-item:last-child { border-bottom: 1px solid var(--divider); }
+  .exp-item:hover { background: oklch(16% 0.01 75 / 0.5); padding-left: 1rem; margin-left: -1rem; margin-right: -1rem; padding-right: 1rem; }
+  .exp-meta .exp-date {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+  .exp-meta .exp-company {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-style: italic;
+    color: var(--text-primary);
+    margin-top: 0.3rem;
+  }
+  .exp-role { font-size: 0.88rem; color: var(--accent); font-weight: 500; }
+  .exp-detail { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.8; }
+  .exp-detail li { margin-bottom: 0.5rem; }
+  .exp-detail ul { list-style: none; padding: 0; }
+  .exp-detail li::before {
+    content: '—';
+    color: var(--accent);
+    margin-right: 0.6rem;
+    opacity: 0.5;
+  }
+  .exp-link {
+    display: inline-block;
+    margin-top: 0.8rem;
+    font-size: 0.78rem;
+    color: var(--accent-dim);
+    text-decoration: none;
+    border-bottom: 1px solid oklch(58% 0.09 78 / 0.25);
+    transition: all var(--transition-base);
+    word-break: break-all;
+  }
+  .exp-link:hover { color: var(--accent); border-color: var(--accent); }
+
+  .highlight-num {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.05em;
+  }
+
+  /* === EDUCATION === */
+  .edu-block {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    border-top: 1px solid var(--divider);
+    padding-top: 2.5rem;
+  }
+  .edu-info h3 {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    font-style: italic;
+  }
+  .edu-info .edu-school {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.3rem;
+  }
+  .edu-info .edu-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    margin-top: 0.3rem;
+  }
+  .edu-achievements { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.9; }
+  .edu-achievements li::before {
+    content: '·';
+    color: var(--accent);
+    margin-right: 0.6rem;
+    font-weight: 700;
+  }
+
+  /* === SKILLS === */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+  .skill-category {
+    border-top: 1px solid var(--divider);
+    padding-top: 1.5rem;
+  }
+  .skill-category h4 {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    font-style: italic;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .skill-tag {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.9rem;
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+    border-radius: 100px;
+    letter-spacing: 0.03em;
+    transition: all var(--transition-base);
+  }
+  .skill-tag:hover {
+    background: var(--accent-glow);
+    color: var(--accent);
+  }
+
+  /* === CONTACT === */
+  .contact-section { background: var(--bg-surface); }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 6rem);
+  }
+  .contact-left h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .contact-left h2 em { font-style: italic; color: var(--accent); }
+  .contact-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .contact-item {
+    border-top: 1px solid var(--divider);
+    padding-top: 1.5rem;
+  }
+  .contact-item .contact-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 0.3rem;
+  }
+  .contact-item .contact-value {
+    font-size: 1rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+  .contact-item a.contact-value:hover { color: var(--accent); }
+
+  /* === FOOTER === */
+  footer {
+    padding: 3rem clamp(1.5rem, 6vw, 6rem);
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--divider);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* === SCROLL REVEAL === */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1),
+                transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    .hero-accent { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.8rem; }
+    .exp-item:hover { padding-left: 0; margin-left: 0; margin-right: 0; padding-right: 0; }
+    .about-stats { grid-template-columns: repeat(3, 1fr); }
+    .edu-block { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    .nav-links { gap: 1.2rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">LJ.</div>
+  <ul class="nav-links">
+    <li><a href="#about">关于</a></li>
+    <li><a href="#experience">经历</a></li>
+    <li><a href="#education">教育</a></li>
+    <li><a href="#skills">技能</a></li>
+    <li><a href="#contact">联系</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-content">
+    <p class="hero-tag">Post-Production · Video Editor</p>
+    <h1>李津<em>后期实习生</em></h1>
+    <p class="hero-sub">
+      用镜头语言讲述故事，从创意构思到最终成品，每一帧都倾注对影视的热爱与执着。
+    </p>
+    <div class="hero-meta">
+      <span>18919174496</span>
+      <span>2916573816@qq.com</span>
+      <span>21岁</span>
+    </div>
+  </div>
+  <div class="hero-accent"></div>
+</section>
+
+<section id="about">
+  <div class="section-container">
+    <p class="section-label reveal">About</p>
+    <div class="about-grid reveal">
+      <div class="about-side">
+        <h2>用影像<em>说话</em>的剪辑师</h2>
+      </div>
+      <div class="about-main">
+        <p>
+          拥有较强的逻辑思维能力，对影视行业满怀热爱与执着。具备独立完成视频剪辑、视频包装的能力，能从创意构思到最终成品落地全程把控。
+        </p>
+        <p>
+          善于制定切实可行的工作与学习计划，面对变化和挑战时始终保持乐观心态，勇于迎接。具备强烈的责任感，能高效、负责地完成各项任务。
+        </p>
+        <div class="about-stats">
+          <div class="stat">
+            <div class="stat-value">10w+</div>
+            <div class="stat-label">单视频最高播放</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">1.5w</div>
+            <div class="stat-label">粉丝增长贡献</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">150h+</div>
+            <div class="stat-label">素材处理经验</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="section-container">
+    <p class="section-label reveal">Experience</p>
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <div class="exp-date">2025.07 — 2025.09</div>
+        <div class="exp-company">成都抖激灵文化传媒</div>
+        <div class="exp-role">实习剪辑师</div>
+      </div>
+      <div></div>
+      <div class="exp-detail">
+        <ul>
+          <li>独立完成前期拍摄（场景布置、设备调试）到后期剪辑、调色、MG 动画制作及封面创作的全流程</li>
+          <li>在摄图网、千库网挑选合适素材，进行特效添加、音频优化等处理，提升视频整体质感</li>
+        </ul>
+        <p style="margin-top:1rem;font-size:0.82rem;color:var(--text-muted);">
+          平均单视频点赞量超 <span class="highlight-num">5,000</span> · 单个视频制作周期 <span class="highlight-num">1~2 天</span>
+        </p>
+        <a class="exp-link" href="https://v.douyin.com/800hVdJErr4/" target="_blank" rel="noopener">观看频道 →</a>
+      </div>
+    </div>
+
+    <div class="exp-item reveal">
+      <div class="exp-meta">
+        <div class="exp-date">2024.08 — 2024.11</div>
+        <div class="exp-company">高新区吾爱帕帕网络工作室</div>
+        <div class="exp-role">剪辑师</div>
+      </div>
+      <div></div>
+      <div class="exp-detail">
+        <ul>
+          <li>从 27 季、总时长超 <span class="highlight-num">150 小时</span> 的节目素材中精准挑选优质内容，独立策划混剪视频创意方案并完成剪辑成片</li>
+          <li>使用飞书工作流高效配合制作译制视频，完成双语字幕、水印、浮动节目介绍及片尾广告设计</li>
+        </ul>
+        <p style="margin-top:1rem;font-size:0.82rem;color:var(--text-muted);">
+          单混剪视频一周播放量 <span class="highlight-num">10万+</span> · 单视频点赞投币 <span class="highlight-num">13,000+</span> · 频道月更新量 5→7 · 粉丝 <span class="highlight-num">32万→33.5万</span>
+        </p>
+        <a class="exp-link" href="https://b23.tv/dE0asZO" target="_blank" rel="noopener">观看频道 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="section-container">
+    <p class="section-label reveal">Education</p>
+    <div class="edu-block reveal">
+      <div class="edu-info">
+        <h3>通信工程</h3>
+        <div class="edu-school">江苏师范大学科文学院</div>
+        <div class="edu-date">2022.09 — 2026.06</div>
+      </div>
+      <ul class="edu-achievements" style="list-style:none;padding:0;">
+        <li>两项大创结项及软件著作权</li>
+        <li>第九届"互联网+"大赛校级三等奖（负责宣传视频策划与制作）</li>
+        <li>校级优秀团员 · 优秀学生干部 · 班级团支书</li>
+        <li>校级奖学金获得者</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="section-container">
+    <p class="section-label reveal">Skills</p>
+    <div class="skills-grid reveal">
+      <div class="skill-category">
+        <h4>后期软件</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Premiere Pro</span>
+          <span class="skill-tag">After Effects</span>
+          <span class="skill-tag">Audition</span>
+          <span class="skill-tag">Photoshop</span>
+          <span class="skill-tag">剪辑</span>
+          <span class="skill-tag">动效</span>
+          <span class="skill-tag">调色</span>
+          <span class="skill-tag">封面设计</span>
+        </div>
+      </div>
+      <div class="skill-category">
+        <h4>协作 & 办公</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">飞书工作流</span>
+          <span class="skill-tag">Word</span>
+          <span class="skill-tag">Excel</span>
+          <span class="skill-tag">PowerPoint</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section" id="contact">
+  <div class="section-container">
+    <p class="section-label reveal">Contact</p>
+    <div class="contact-grid reveal">
+      <div class="contact-left">
+        <h2>期待与你<em>合作</em></h2>
+      </div>
+      <div class="contact-right">
+        <div class="contact-item">
+          <div class="contact-label">电话</div>
+          <div class="contact-value">18919174496</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">邮箱</div>
+          <a class="contact-value" href="mailto:2916573816@qq.com">2916573816@qq.com</a>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">所在地</div>
+          <div class="contact-value">中国</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 李津</span>
+  <span>后期实习生 · 个人简历</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
